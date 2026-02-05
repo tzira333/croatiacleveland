@@ -1,7 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "croatia-cleveland-fc",
-  "main": "src/index.tsx",
+  "name": "croatiacleveland1957",
   "compatibility_date": "2024-01-01",
   "compatibility_flags": ["nodejs_compat"],
   "pages_build_output_dir": "./dist",
