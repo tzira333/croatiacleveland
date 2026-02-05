@@ -567,7 +567,7 @@ app.get('/', (c) => {
             <!-- Hero Section -->
             <div class="bg-gradient-to-r from-red-600 to-blue-600 text-white rounded-lg p-12 mb-8 text-center">
                 <h2 class="text-4xl font-bold mb-4">Welcome to Croatia Cleveland</h2>
-                <p class="text-xl mb-6">Proudly representing Croatian heritage and excellence in soccer since 1956</p>
+                <p class="text-xl mb-6">Proudly representing Croatian heritage and excellence in soccer since 1957</p>
                 <div class="flex justify-center space-x-4">
                     <button onclick="window.location.href='/membership'" class="bg-white text-blue-700 px-6 py-3 rounded-lg font-bold hover:bg-gray-100">
                         Become a Member
@@ -636,7 +636,7 @@ app.get('/', (c) => {
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div>
                         <h4 class="text-lg font-bold mb-4">About Us</h4>
-                        <p class="text-gray-400">American Croatian National Soccer Club "Croatia" Cleveland - Preserving Croatian heritage through soccer since 1956.</p>
+                        <p class="text-gray-400">American Croatian National Soccer Club "Croatia" Cleveland - Preserving Croatian heritage through soccer since 1957.</p>
                     </div>
                     <div>
                         <h4 class="text-lg font-bold mb-4">Location</h4>

@@ -13,7 +13,7 @@ INSERT OR IGNORE INTO users (id, email, password_hash, first_name, last_name, ro
 INSERT OR IGNORE INTO news (title, content, category, priority, active) VALUES 
   ('Majors Win 3-1 Against FC Detroit!', 'Great victory for our first division team with goals from Marković, Kovač, and Petrović.', 'game_result', 1, 1),
   ('Croatia Park Construction 60% Complete', 'New field facility progressing on schedule. Expected completion Spring 2026.', 'club_event', 2, 1),
-  ('Player Spotlight: Ivan Kovač Named MVP', 'Congratulations to Ivan Kovač for outstanding performance this season.', 'player_highlight', 1, 1);
+  ('Player Spotlight: Tomo Maric and Ivi Medukic Named Co-MVPs', 'Congratulations to Ivan Kovač for outstanding performance this season.', 'player_highlight', 1, 1);
 
 -- Insert sample products
 INSERT OR IGNORE INTO products (name, description, price, category, stock_quantity) VALUES 
