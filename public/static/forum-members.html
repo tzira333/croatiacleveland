@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members Forum - Croatia Cleveland</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-green-700 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold">Croatia Cleveland</h1>
+                    <span class="text-sm opacity-75">
+                        <i class="fas fa-lock mr-1"></i>Members Forum
+                    </span>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="/" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="/forum" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg">
+                        <i class="fas fa-comments mr-2"></i>Public Forum
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Access Check Message -->
+    <div id="accessCheck" class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow p-8 text-center">
+            <i class="fas fa-spinner fa-spin text-4xl text-blue-600 mb-4"></i>
+            <p class="text-gray-600">Verifying membership status...</p>
+        </div>
+    </div>
+
+    <!-- Forum Content (hidden initially) -->
+    <div id="forumContent" class="hidden container mx-auto px-4 py-8">
+        <!-- Forum Header -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">
+                        <i class="fas fa-lock text-green-600 mr-2"></i>
+                        Members Only Forum
+                    </h2>
+                    <p class="text-gray-600">Private discussions for active members in good standing</p>
+                    <p class="text-sm text-green-600 mt-2">
+                        <i class="fas fa-check-circle mr-1"></i>
+                        Your membership is active
+                    </p>
+                </div>
+                <button id="newTopicBtn" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 font-bold">
+                    <i class="fas fa-plus mr-2"></i>New Topic
+                </button>
+            </div>
+        </div>
+
+        <!-- Forum Categories -->
+        <div id="forumCategories" class="space-y-4">
+            <p class="text-center text-gray-600">Loading forum categories...</p>
+        </div>
+    </div>
+
+    <!-- Access Denied Message (hidden initially) -->
+    <div id="accessDenied" class="hidden container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow p-8 text-center">
+            <i class="fas fa-lock text-6xl text-red-600 mb-4"></i>
+            <h2 class="text-2xl font-bold mb-4">Members Only Area</h2>
+            <p class="text-gray-600 mb-6">This forum is restricted to active members with paid membership in good standing.</p>
+            
+            <div class="max-w-md mx-auto space-y-4">
+                <div class="text-left bg-blue-50 p-4 rounded-lg">
+                    <h3 class="font-bold mb-2">Not a member yet?</h3>
+                    <p class="text-sm text-gray-700 mb-3">Join Croatia Cleveland FC and get access to exclusive member benefits!</p>
+                    <button onclick="window.location.href='/membership'" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                        <i class="fas fa-user-plus mr-2"></i>Become a Member
+                    </button>
+                </div>
+                
+                <div class="text-left bg-green-50 p-4 rounded-lg">
+                    <h3 class="font-bold mb-2">Already a member?</h3>
+                    <p class="text-sm text-gray-700 mb-3">Please login to access the members forum.</p>
+                    <button onclick="window.location.href='/login'" class="w-full bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
+                </div>
+                
+                <div class="text-left bg-yellow-50 p-4 rounded-lg">
+                    <h3 class="font-bold mb-2">Membership expired?</h3>
+                    <p class="text-sm text-gray-700 mb-3">Renew your membership to regain access.</p>
+                    <button onclick="window.location.href='/membership/renew'" class="w-full bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700">
+                        <i class="fas fa-refresh mr-2"></i>Renew Membership
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Topic Modal -->
+    <div id="newTopicModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-2xl font-bold mb-4">Create New Topic</h3>
+            
+            <form id="newTopicForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Category *</label>
+                    <select id="topicCategory" required class="w-full border rounded-lg px-4 py-2">
+                        <option value="">Select a category...</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Topic Title *</label>
+                    <input type="text" id="topicTitle" required maxlength="200" class="w-full border rounded-lg px-4 py-2" placeholder="Enter topic title">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-bold mb-2">Message *</label>
+                    <textarea id="topicContent" required rows="8" class="w-full border rounded-lg px-4 py-2" placeholder="What's on your mind?"></textarea>
+                </div>
+                
+                <div class="flex space-x-3">
+                    <button type="submit" class="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-green-700">
+                        <i class="fas fa-paper-plane mr-2"></i>Post Topic
+                    </button>
+                    <button type="button" onclick="closeNewTopicModal()" class="px-6 py-3 border rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        let currentUser = null;
+        let categories = [];
+
+        // Check membership status
+        async function checkMembershipAccess() {
+            const token = localStorage.getItem('croatia_token');
+            const user = localStorage.getItem('croatia_user');
+            
+            if (!token || !user) {
+                showAccessDenied();
+                return false;
+            }
+            
+            currentUser = JSON.parse(user);
+            
+            // Check if user has active membership
+            if (currentUser.membershipStatus !== 'active') {
+                showAccessDenied();
+                return false;
+            }
+            
+            // User has access
+            showForumContent();
+            return true;
+        }
+
+        function showAccessDenied() {
+            document.getElementById('accessCheck').classList.add('hidden');
+            document.getElementById('accessDenied').classList.remove('hidden');
+        }
+
+        function showForumContent() {
+            document.getElementById('accessCheck').classList.add('hidden');
+            document.getElementById('forumContent').classList.remove('hidden');
+            loadCategories();
+        }
+
+        // Load forum categories
+        async function loadCategories() {
+            try {
+                const response = await axios.get('/api/forum/categories?type=members');
+                categories = response.data;
+                
+                const container = document.getElementById('forumCategories');
+                
+                if (categories.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center">No forum categories available.</p>';
+                    return;
+                }
+                
+                container.innerHTML = categories.map(category => `
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <div class="p-6 cursor-pointer" onclick="viewCategory(${category.id})">
+                            <div class="flex justify-between items-center">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-bold text-green-700 mb-2">
+                                        <i class="fas fa-folder-lock text-green-600 mr-2"></i>
+                                        ${category.name}
+                                    </h3>
+                                    <p class="text-gray-600">${category.description || ''}</p>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400 text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Populate category dropdown in new topic modal
+                const select = document.getElementById('topicCategory');
+                select.innerHTML = '<option value="">Select a category...</option>' + 
+                    categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
+                
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                document.getElementById('forumCategories').innerHTML = '<p class="text-red-600 text-center">Error loading forum categories</p>';
+            }
+        }
+
+        // View category topics
+        function viewCategory(categoryId) {
+            window.location.href = `/forum/category/${categoryId}`;
+        }
+
+        // Show new topic modal
+        document.getElementById('newTopicBtn').addEventListener('click', function() {
+            document.getElementById('newTopicModal').classList.remove('hidden');
+        });
+
+        // Close new topic modal
+        function closeNewTopicModal() {
+            document.getElementById('newTopicModal').classList.add('hidden');
+            document.getElementById('newTopicForm').reset();
+        }
+
+        // Handle new topic form submission
+        document.getElementById('newTopicForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const token = localStorage.getItem('croatia_token');
+            if (!token) {
+                alert('Session expired. Please login again.');
+                window.location.href = '/login';
+                return;
+            }
+            
+            const data = {
+                category_id: parseInt(document.getElementById('topicCategory').value),
+                title: document.getElementById('topicTitle').value,
+                content: document.getElementById('topicContent').value
+            };
+            
+            try {
+                const response = await axios.post('/api/forum/topics', data, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.data.success) {
+                    alert('Topic created successfully!');
+                    closeNewTopicModal();
+                    // Redirect to the new topic
+                    window.location.href = `/forum/topic/${response.data.topicId}`;
+                }
+            } catch (error) {
+                console.error('Error creating topic:', error);
+                if (error.response && error.response.status === 403) {
+                    alert('Active membership required to post in this forum.');
+                } else if (error.response && error.response.status === 401) {
+                    alert('Session expired. Please login again.');
+                    window.location.href = '/login';
+                } else {
+                    alert('Error creating topic. Please try again.');
+                }
+            }
+        });
+
+        // Initialize - check access first
+        checkMembershipAccess();
+    </script>
+</body>
+</html>
