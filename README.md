@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Croatia Cleveland - American Croatian National Soccer Club Website
 
 **Official Domain:** croatiacleveland1957.com
@@ -288,3 +289,7 @@ For questions or support:
 ---
 
 **Built with ❤️ for the Croatia Cleveland soccer community**
+=======
+# croatiacleveland
+new 2026 website
+>>>>>>> origin/main
