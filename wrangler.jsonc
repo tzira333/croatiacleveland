@@ -8,8 +8,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "croatia-cleveland-production",
-      "database_id": "25ba39a7-a2eb-4124-ac40-4984cee160ad"  // ✅ PASTE THE ID FROM STEP 1
+      "database_name": "croatia-cleveland-db",
+      "database_id": "25ba39a7-a2eb-4124-ac40-4984cee160ad"
     }
   ]
 }

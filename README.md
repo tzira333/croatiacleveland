@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Croatia Cleveland - American Croatian National Soccer Club Website
 
 **Official Domain:** croatiacleveland1957.com
@@ -7,7 +6,6 @@ A full-stack web application for the American Croatian National Soccer Club "Cro
 
 ## 🌐 Live URLs
 
-- **Development Server**: https://3000-ifurenhevzmy1obt7d4z8-cbeee0f9.sandbox.novita.ai
 - **Production**: (To be deployed to Cloudflare Pages)
 
 ## ✅ Completed Features
@@ -289,7 +287,3 @@ For questions or support:
 ---
 
 **Built with ❤️ for the Croatia Cleveland soccer community**
-=======
-# croatiacleveland
-new 2026 website
->>>>>>> origin/main
