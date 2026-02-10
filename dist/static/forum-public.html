@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Forum - Croatia Cleveland</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-red-700 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <h1 class="text-2xl font-bold">Croatia Cleveland</h1>
+                    <span class="text-sm opacity-75">Public Forum</span>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="/" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="/forum/members" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg">
+                        <i class="fas fa-lock mr-2"></i>Members Forum
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Forum Header -->
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">
+                        <i class="fas fa-comments text-red-600 mr-2"></i>
+                        Public Forum
+                    </h2>
+                    <p class="text-gray-600">Connect with the Croatia Cleveland community</p>
+                </div>
+                <button id="newTopicBtn" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 font-bold">
+                    <i class="fas fa-plus mr-2"></i>New Topic
+                </button>
+            </div>
+        </div>
+
+        <!-- Forum Categories -->
+        <div id="forumCategories" class="space-y-4">
+            <p class="text-center text-gray-600">Loading forum categories...</p>
+        </div>
+    </div>
+
+    <!-- New Topic Modal -->
+    <div id="newTopicModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-2xl font-bold mb-4">Create New Topic</h3>
+            
+            <form id="newTopicForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Category *</label>
+                    <select id="topicCategory" required class="w-full border rounded-lg px-4 py-2">
+                        <option value="">Select a category...</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-bold mb-2">Topic Title *</label>
+                    <input type="text" id="topicTitle" required maxlength="200" class="w-full border rounded-lg px-4 py-2" placeholder="Enter topic title">
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-bold mb-2">Message *</label>
+                    <textarea id="topicContent" required rows="8" class="w-full border rounded-lg px-4 py-2" placeholder="What's on your mind?"></textarea>
+                </div>
+                
+                <div class="flex space-x-3">
+                    <button type="submit" class="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700">
+                        <i class="fas fa-paper-plane mr-2"></i>Post Topic
+                    </button>
+                    <button type="button" onclick="closeNewTopicModal()" class="px-6 py-3 border rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        let currentUser = null;
+        let categories = [];
+
+        // Check if user is logged in
+        function checkAuth() {
+            const token = localStorage.getItem('croatia_token');
+            const user = localStorage.getItem('croatia_user');
+            
+            if (token && user) {
+                currentUser = JSON.parse(user);
+                return true;
+            }
+            return false;
+        }
+
+        // Load forum categories
+        async function loadCategories() {
+            try {
+                const response = await axios.get('/api/forum/categories?type=public');
+                categories = response.data;
+                
+                const container = document.getElementById('forumCategories');
+                
+                if (categories.length === 0) {
+                    container.innerHTML = '<p class="text-gray-500 text-center">No forum categories available.</p>';
+                    return;
+                }
+                
+                container.innerHTML = categories.map(category => `
+                    <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
+                        <div class="p-6 cursor-pointer" onclick="viewCategory(${category.id})">
+                            <div class="flex justify-between items-center">
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-bold text-red-700 mb-2">
+                                        <i class="fas fa-folder text-blue-600 mr-2"></i>
+                                        ${category.name}
+                                    </h3>
+                                    <p class="text-gray-600">${category.description || ''}</p>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400 text-2xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                // Populate category dropdown in new topic modal
+                const select = document.getElementById('topicCategory');
+                select.innerHTML = '<option value="">Select a category...</option>' + 
+                    categories.map(cat => `<option value="${cat.id}">${cat.name}</option>`).join('');
+                
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                document.getElementById('forumCategories').innerHTML = '<p class="text-red-600 text-center">Error loading forum categories</p>';
+            }
+        }
+
+        // View category topics
+        function viewCategory(categoryId) {
+            window.location.href = `/forum/category/${categoryId}`;
+        }
+
+        // Show new topic modal
+        document.getElementById('newTopicBtn').addEventListener('click', function() {
+            if (!checkAuth()) {
+                alert('Please login to create a new topic.');
+                // In production, redirect to login page
+                return;
+            }
+            
+            document.getElementById('newTopicModal').classList.remove('hidden');
+        });
+
+        // Close new topic modal
+        function closeNewTopicModal() {
+            document.getElementById('newTopicModal').classList.add('hidden');
+            document.getElementById('newTopicForm').reset();
+        }
+
+        // Handle new topic form submission
+        document.getElementById('newTopicForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const token = localStorage.getItem('croatia_token');
+            if (!token) {
+                alert('Please login to create a topic.');
+                return;
+            }
+            
+            const data = {
+                category_id: parseInt(document.getElementById('topicCategory').value),
+                title: document.getElementById('topicTitle').value,
+                content: document.getElementById('topicContent').value
+            };
+            
+            try {
+                const response = await axios.post('/api/forum/topics', data, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.data.success) {
+                    alert('Topic created successfully!');
+                    closeNewTopicModal();
+                    // Redirect to the new topic
+                    window.location.href = `/forum/topic/${response.data.topicId}`;
+                }
+            } catch (error) {
+                console.error('Error creating topic:', error);
+                if (error.response && error.response.status === 401) {
+                    alert('Please login to create a topic.');
+                } else {
+                    alert('Error creating topic. Please try again.');
+                }
+            }
+        });
+
+        // Initialize
+        checkAuth();
+        loadCategories();
+    </script>
+</body>
+</html>
