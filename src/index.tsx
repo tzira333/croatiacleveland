@@ -524,7 +524,7 @@ app.get('/', (c) => {
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <link href="/static/styles.css" rel="stylesheet">
     </head>
-    <body class="bg-gray-50">
+    <body class="bg-blue-600 text-white">
         <!-- Navigation -->
         <nav class="bg-red-700 text-white shadow-lg">
             <div class="container mx-auto px-4 py-4">
@@ -556,7 +556,7 @@ app.get('/', (c) => {
         </nav>
 
         <!-- Scrolling News Banner -->
-        <div class="bg-blue-800 text-white py-2 overflow-hidden">
+        <div class="bg-white text-blue-600 py-2 overflow-hidden">
             <div id="newsBanner" class="whitespace-nowrap animate-scroll">
                 Loading news...
             </div>
@@ -682,7 +682,7 @@ app.get('/teams', (c) => {
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <link href="/static/styles.css" rel="stylesheet">
     </head>
-    <body class="bg-gray-50">
+    <body class="bg-blue-600 text-white">
         <nav class="bg-red-700 text-white shadow-lg">
             <div class="container mx-auto px-4 py-4">
                 <div class="flex items-center justify-between">
@@ -753,7 +753,7 @@ app.get('/croatia-park', (c) => {
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
         <link href="/static/styles.css" rel="stylesheet">
     </head>
-    <body class="bg-gray-50">
+    <body class="bg-blue-600 text-white">
         <nav class="bg-red-700 text-white shadow-lg">
             <div class="container mx-auto px-4 py-4">
                 <div class="flex items-center justify-between">
